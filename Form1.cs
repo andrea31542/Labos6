@@ -13,6 +13,7 @@ namespace Labos6
 {
     public partial class Form1 : Form
     {
+        public event EventHandler UserLoggedIn;
         public Form1()
         {
             InitializeComponent();
@@ -48,6 +49,10 @@ namespace Labos6
         {
             if (UserIsValid())
             {
+                if (UserLoggedIn != null)
+                {
+                    UserLoggedIn(this, EventArgs.Empty);
+                }
                 Close();
             }
 
