@@ -11,24 +11,19 @@ using System.Xml.Linq;
 
 namespace Labos6
 {
-    public partial class Form1 : Form
+    public partial class Login : Form
     {
         public event EventHandler UserLoggedIn;
-        public Form1()
+        public Login()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private bool UserIsValid()
         {
             XElement korisnici = XElement.Load("korisnici.xml");
 
-            var users = from user in korisnici.Elements("korisnik")
+            var users = from user in korisnici.Elements()
                 select new
                 {
                     username = (string)user.Element("korisnickoIme"),
@@ -39,7 +34,8 @@ namespace Labos6
 
             foreach (var user in users)
             {
-                if (string.Compare(user.username, textBoxUserName.Text, true) == 0 && user.password == textBoxPassword.Text)
+                if (string.Compare(user.username, textBoxUsername.Text, true) == 0
+                    && user.password == textBoxPassword.Text)
                     return true;
             }
             return false;
@@ -47,15 +43,18 @@ namespace Labos6
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (UserIsValid())
+            if (UserLoggedIn != null)
             {
-                if (UserLoggedIn != null)
-                {
-                    UserLoggedIn(this, EventArgs.Empty);
-                }
-                Close();
+                UserLoggedIn(this, EventArgs.Empty);
             }
 
+            if (UserIsValid())
+            {
+                Close();
+                return; 
+            }
+
+            //MessageBox.Show("Invalid Username or password.");
             MessageBox.Show("Invalid username or password", "User Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }

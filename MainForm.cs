@@ -20,10 +20,9 @@ namespace Labos6
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-
-            Form1 login = new Form1();
+            Login login = new Login();
             login.UserLoggedIn += Login_UserLoggedIn;
-            login.Show(this);
+            login.Show(this); // this je od forme koja je otvorena
         }
 
         private void Login_UserLoggedIn(object sender, EventArgs e)
@@ -32,10 +31,15 @@ namespace Labos6
             {
                 //Read xml to dataset and pass file path as parameter
                 dataSet.ReadXml("popisKnjiga.xml");
-                dataGridView1.DataSource = dataSet.Tables[0];
+                dataGridView.DataSource = dataSet.Tables[0];
             }
         }
-    
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            Close();
+            return; 
+        }
     }
 
     
